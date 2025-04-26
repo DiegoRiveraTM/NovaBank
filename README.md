@@ -56,3 +56,21 @@ Client (Browser) → CloudFront → S3 (Static Frontend Hosting)
              Express API (Backend on EC2 Docker)
                          ↓
                   MongoDB Database (Atlas or EC2)
+
+How to Run Locally ⚙️
+    1. Clone the repository
+        git clone https://github.com/DiegoRiveraTM/NovaBank
+    2. Backend setup:
+        cd backend
+        npm install 
+        npm run dev
+    3. Frontend setup
+        cd frontend
+        npm install
+        npm run dev
+    4. Docker Local Setup (Optional)
+        docker-compose up --build
+
+Enjoy!
+
+From: DiegoR🚀
