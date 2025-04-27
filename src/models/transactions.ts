@@ -10,12 +10,12 @@ export interface ITransaction extends Document {
 
 const TransactionSchema: Schema<ITransaction> = new Schema(
     {
-    user: { type: String, required: true, unique: true },
+    user: { type: mongoose.Schema.Types.ObjectId, required: true, unique: true },
     amount: { type: Number, required: true },
     type: { type: String, enum: ['deposit', 'withdrawal', 'transfer'], required: true },
     date: { type: Date, default: Date.now },
     status: { type: String, enum: ['pending', 'completed', 'failed'], required: true },
     }, 
-    { timestamps: true } //this creates createdAd and updatedAt fields auto
+    { timestamps: true } 
 );
 export default mongoose.model<ITransaction>('Transaction', TransactionSchema);
