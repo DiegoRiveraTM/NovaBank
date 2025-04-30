@@ -3,15 +3,21 @@ import User from '../models/users';
 import bcrypt from 'bcrypt';
 import jwt, { SignOptions } from 'jsonwebtoken';
 import dotenv from 'dotenv';
+import crypto from 'crypto';
 
 dotenv.config();
 
 const saltRounds = Number(process.env.BCRYPT_SALT_ROUNDS) || 10;
 
+const generateClabe = (): string => {
+    const clabe = Array.from ({ length: 18 }, () => Math.floor(Math.random() * 10)).join('');
+    return clabe;
+};
+
 export const register = async (req: Request, res: Response): Promise<void> => {
-    const { email, password } = req.body;
-    if (!email || !password) {
-        res.status(400).json({ message: "Email and password are required" });
+    const { email, password, username} = req.body;
+    if (!email || !password || !username) {
+        res.status(400).json({ message: "Email, username and password are required" });
         return;
     }
     try {
@@ -21,7 +27,7 @@ export const register = async (req: Request, res: Response): Promise<void> => {
             return;
         }
         const hashedPassword = await bcrypt.hash(password, saltRounds);
-        const newUser = new User({ email, password: hashedPassword });
+        const newUser = new User({ username, email, password: hashedPassword, clabe: generateClabe(), accountNumber: crypto.randomUUID() });
         await newUser.save();
         res.status(201).json({ message: "User registered successfully" });
     } catch {
