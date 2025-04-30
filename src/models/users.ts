@@ -1,5 +1,10 @@
 import mongoose, { Schema, Document } from 'mongoose';
 
+export interface SavedUsers {
+    name: string;
+    clabe: string;
+    alias: string;
+}
 export interface IUser extends Document {
     username: string;
     password: string;
@@ -9,6 +14,8 @@ export interface IUser extends Document {
     transactions: mongoose.Types.ObjectId[];
     withdrawals: mongoose.Types.ObjectId[];
     deposits: mongoose.Types.ObjectId[];
+    clabe: string;
+    savedUsers: SavedUsers[];
 }
 
 const UserSchema: Schema<IUser> = new Schema(
@@ -20,7 +27,15 @@ const UserSchema: Schema<IUser> = new Schema(
     transactions: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Transaction' }],
     withdrawals: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Transaction' }],
     deposits: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Transaction' }],
-    accountNumber: { type: String, required: true, unique: true }
+    accountNumber: { type: String, required: true, unique: true },
+    clabe: { type: String, required: true, unique: true, minlength: 18, maxlength: 18 },
+    savedUsers: [
+        {
+            name: { type: String, required: true },
+            clabe: { type: String, required: true },
+            alias: { type: String, required: true },
+        },
+    ],
     }, 
     { timestamps: true } //this creates createdAd and updatedAt fields auto
 );
