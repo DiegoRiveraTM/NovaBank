@@ -2,7 +2,7 @@ import connectDB from '../src/config/db';
 import express from 'express';
 import bodyParser from 'body-parser';
 import auth from './routes/auth';
-
+import transactionRoutes from './routes/transactionRoutes';
 connectDB();
 const app = express();
 
@@ -24,4 +24,4 @@ app.get('/', (req, res) => {
 
 //Rutas de mi API //Falta poner las routes del folder routes
 app.use('/api/auth', auth);
-app.use('/api/transactions', transactionRoutes); )
+app.use('/api/transactions', transactionRoutes); 
