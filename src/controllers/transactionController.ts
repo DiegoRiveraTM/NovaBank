@@ -1,7 +1,7 @@
 import User from '../models/users';
 import { Response } from 'express';
 import { AuthRequest } from '../middleware/authMiddleware';
-
+import Transaction from '../models/transactions';
 export const deposits = async (req: AuthRequest, res: Response): Promise<void> => {
     try {
         const userId = req.user?.id;
@@ -23,10 +23,85 @@ export const deposits = async (req: AuthRequest, res: Response): Promise<void> =
     }
 }
 
-export const withdrawals = async (req: Request, res: Request): Promise<void> => {
+//export const withdrawals = async (req: AuthRequest, res: Request): Promise<void> => {
+//
+//}
 
-}
+export const transfers = async (req: AuthRequest, res: Response): Promise<void> => {
+    try {
+        const { amount, clabe, saveUser} = req.body;
+        const sender = await User.findById(req.user?.id);
+        
+        if (!amount || !clabe ){
+            res.status(400).json ({ message: "Amount and CLABE are required"});
+            return;
+        }
 
-export const transfers = async (req: Request, res: Request): Promise<void> => {
+        if (!sender) {
+            res.status(404).json({ message: "Sender not found" });
+            return;
+        }
 
-}
+        if( amount <= 0){
+            res.status(400).json({ message: "Amount must be greater than 0" });
+            return;
+        }
+
+        if (sender.balance < amount) {
+            res.status(400).json({ message: "Insufficient balance for this transfer" });
+            return;
+        }
+        
+        const receiver = await User.findOne({ accountNumber: clabe });
+        if (!receiver) {
+            res.status(404).json({ message: "Receiver not found" });
+            return;
+        }
+        if (receiver._id === sender._id) {
+            res.status(400).json({ message: "You cannot transfer to yourself" });
+            return;
+        }
+
+        //complete the transfer 
+        sender.balance -= amount;
+        receiver.balance += amount;
+
+        //save the contact for future transactions 
+        if (saveUser && !sender.savedUsers?.includes(receiver.id)) {
+            sender.savedUsers?.push(receiver.id);
+        }
+
+        //create the voucher with the details of the transaction
+        const newTransaction = new Transaction({
+            user: sender._id,
+            amount,
+            type: 'transfer',
+            status: 'completed',
+            date: new Date(),
+            details: {
+                to: receiver.username,
+                toClabe: receiver.accountNumber,
+            }
+        });
+
+        await sender.save();
+        await receiver.save();
+        await newTransaction.save();
+
+        //respond with the voucher 
+        res.status(200).json({
+            message: "Transfer Succesful",
+            transaction: {
+                from: sender.username,
+                to: receiver.username,
+                toClabe: receiver.accountNumber,
+                amount,
+                date: newTransaction.date,
+                transactionId: newTransaction._id,
+                status: newTransaction.status,
+            }
+        })
+    }catch (error: unknown) {
+            console.error("Error in transfers controller:", error);
+            res.status(500).json({ message: "Internal server error" });
+    }}

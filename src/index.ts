@@ -25,3 +25,9 @@ app.get('/', (req, res) => {
 //Rutas de mi API //Falta poner las routes del folder routes
 app.use('/api/auth', auth);
 app.use('/api/transactions', transactionRoutes); 
+
+//Start the server
+const PORT = process.env.port || 4000;
+app.listen(PORT, () => {
+    console.log(`Server is running on port, ${PORT}`); 
+});
