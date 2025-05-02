@@ -29,7 +29,11 @@ export const register = async (req: Request, res: Response): Promise<void> => {
         const hashedPassword = await bcrypt.hash(password, saltRounds);
         const newUser = new User({ username, email, password: hashedPassword, clabe: generateClabe(), accountNumber: crypto.randomUUID() });
         await newUser.save();
-        res.status(201).json({ message: "User registered successfully" });
+        res.status(201).json({ 
+            message: "User registered successfully",
+            accountNumber: newUser.accountNumber,
+            clabe: newUser.clabe
+        });
     } catch {
         res.status(500).json({ message: "Internal server error" });
     }

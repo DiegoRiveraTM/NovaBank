@@ -7,13 +7,28 @@ import Transaction from '../models/transactions';
 export const deposits = async (req: AuthRequest, res: Response): Promise<void> => {
     try {
         const userId = req.user?.id;
-
+        const { amount } = req.body;
         const user = await User.findById(userId).select('username clabe');
-
         if (!user){
             res.status(404).json({ message: "User not found" });
             return;
         }
+        if (!amount || amount <=0) {
+            res.status(400).json({ message: "Amount is required" });
+            return;
+        }
+        user.balance += amount;
+        const newTransaction = new Transaction({
+            user: userId,
+            amount,
+            type: 'deposit',
+            status: 'completed',
+            date: new Date(),
+        });
+        await user.save();
+        await newTransaction.save();
+        
+        //voucher of the transaction
         res.status(200).json({
             bank: "Nova Bank",
             name: user.username,
