@@ -2,6 +2,8 @@ import User from '../models/users';
 import { Response } from 'express';
 import { AuthRequest } from '../middleware/authMiddleware';
 import Transaction from '../models/transactions';
+
+
 export const deposits = async (req: AuthRequest, res: Response): Promise<void> => {
     try {
         const userId = req.user?.id;
@@ -105,3 +107,18 @@ export const transfers = async (req: AuthRequest, res: Response): Promise<void> 
             console.error("Error in transfers controller:", error);
             res.status(500).json({ message: "Internal server error" });
     }}
+
+export const getTransactions = async (req: AuthRequest, res: Response): Promise<void> => {
+    try {
+        const userId = req.user?.id;
+        const transactions = await Transaction.find({ user: userId }).sort({ date: -1 });
+        res.status(200).json({ 
+            message: "Transactions history retrieved successfully",
+            count: transactions.length,
+            transactions
+        })
+    } catch (error) {
+        console.error("Error in getTransactions controller:", error);
+        res.status(500).json({ message: "Internal server error" });
+    }
+}
