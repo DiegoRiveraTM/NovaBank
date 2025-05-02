@@ -30,7 +30,10 @@ export const deposits = async (req: AuthRequest, res: Response): Promise<void> =
         });
         await user.save();
         await newTransaction.save();
-        
+        await User.updateOne(
+            { _id: user._id },
+            { $push: { deposits: newTransaction._id } }
+        );
         //voucher of the transaction
         res.status(200).json({
             bank: "Nova Bank",
@@ -109,6 +112,14 @@ export const transfers = async (req: AuthRequest, res: Response): Promise<void> 
         await sender.save();
         await receiver.save();
         await newTransaction.save();
+        await User.updateOne(
+            { _id: sender._id },
+            { $push: { transactions: newTransaction._id } }
+        );
+        await User.updateOne(
+            { _id: receiver._id },
+            { $push: { transactions: newTransaction._id } }
+        );        
 
         //respond with the voucher 
         res.status(200).json({
