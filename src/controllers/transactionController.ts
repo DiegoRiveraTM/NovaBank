@@ -92,8 +92,12 @@ export const transfers = async (req: AuthRequest, res: Response): Promise<void> 
         receiver.balance += amount;
 
         //save the contact for future transactions 
-        if (saveUser && !sender.savedUsers?.includes(receiver.id)) {
-            sender.savedUsers?.push(receiver.id);
+        if (saveUser && !sender.savedUsers?.some(user => user.clabe === receiver.clabe)) {
+            sender.savedUsers?.push({
+                name: receiver.username,
+                clabe: receiver.clabe,
+                alias: receiver.username, 
+            });
         }
 
         //create the voucher with the details of the transaction
