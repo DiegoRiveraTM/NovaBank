@@ -1,4 +1,4 @@
-import connectDB from './config/db.js';
+import connectDB from './config/db';
 import express from 'express';
 import bodyParser from 'body-parser';
 import auth from './routes/auth';

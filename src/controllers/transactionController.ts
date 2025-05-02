@@ -8,19 +8,22 @@ export const deposits = async (req: AuthRequest, res: Response): Promise<void> =
     try {
         const userId = req.user?.id;
         const { amount } = req.body;
-        const user = await User.findById(userId).select('username clabe');
-        if (!user){
+        const user = await User.findById(userId);
+        if (!user) {
             res.status(404).json({ message: "User not found" });
             return;
         }
-        if (!amount || amount <=0) {
-            res.status(400).json({ message: "Amount is required" });
+        if (amount === undefined || isNaN(amount)) {
+            res.status(400).json({ message: "Amount is required and must be a number" });
             return;
         }
-        user.balance += amount;
+        const depositAmount = Number(amount);
+        user.balance += depositAmount;
         const newTransaction = new Transaction({
+            message: `Deposit of ${depositAmount} succesfully completed`,
             user: userId,
             amount,
+            newBalance: user.balance,
             type: 'deposit',
             status: 'completed',
             date: new Date(),
@@ -33,6 +36,8 @@ export const deposits = async (req: AuthRequest, res: Response): Promise<void> =
             bank: "Nova Bank",
             name: user.username,
             clabe: user.clabe,
+            amount: depositAmount,
+            newBalance: user.balance,
         });
 } catch(error) {
         console.error("Error in deposits controller:", error);
@@ -69,7 +74,7 @@ export const transfers = async (req: AuthRequest, res: Response): Promise<void> 
             return;
         }
         
-        const receiver = await User.findOne({ accountNumber: clabe });
+        const receiver = await User.findOne({ clabe });
         if (!receiver) {
             res.status(404).json({ message: "Receiver not found" });
             return;
