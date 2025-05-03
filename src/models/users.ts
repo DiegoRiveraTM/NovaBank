@@ -16,6 +16,8 @@ export interface IUser extends Document {
     deposits: mongoose.Types.ObjectId[];
     clabe: string;
     savedUsers: SavedUsers[];
+    resetPasswordCode?: string;
+    resetPasswordExpires?: number;
 }
 
 const UserSchema: Schema<IUser> = new Schema(
@@ -28,6 +30,8 @@ const UserSchema: Schema<IUser> = new Schema(
     withdrawals: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Transaction' }],
     deposits: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Transaction' }],
     accountNumber: { type: String, required: true, unique: true },
+    resetPasswordCode: { type: String},
+    resetPasswordExpires: { type: Date}, 
     clabe: { type: String, required: true, unique: true, minlength: 18, maxlength: 18 },
     savedUsers: [
         {

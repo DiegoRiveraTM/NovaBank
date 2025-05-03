@@ -1,6 +1,6 @@
 import dotenv from 'dotenv';
 import jwt, { JwtPayload, TokenExpiredError } from 'jsonwebtoken';
-import { login, register } from '../controllers/authController';
+import { /*forgotPassword, */ login, register } from '../controllers/authController';
 import { Request, Response, NextFunction, Router } from 'express';
 
 dotenv.config();
@@ -48,6 +48,13 @@ export const verifyToken = (req: AuthRequest, res: Response, next: NextFunction)
 
     router.post('/login', login);
     router.post('/register', register);
+    
+    //This routes also will be commented until i finish the frontend part, and deploy the app to aws
+    
+    /*router.post('/forgot-password', forgotPassword);
+    router.post('/verify-reset-code');
+    router.post('/reset-password');
+    */
 
     router.get('/profile', verifyToken, async (req: AuthRequest, res: Response): Promise<void> => {
         try {
