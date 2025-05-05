@@ -1,10 +1,16 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-
+import Link from "next/link";
+import { ArrowLeft } from "lucide-react";
 export default function RegisterPage() {
   return (
     <div className="flex min-h-screen items-center justify-center p-4">
       <div className="w-full max-w-sm space-y-6">
+      <Link href="/">
+        <Button variant="ghost" className="absolute top-4 left-4">
+          <ArrowLeft className="mr-2 h-4 w-4" /> Back
+        </Button>
+      </Link>
         <h2 className="text-2xl font-bold text-center">Create your NovaBank account</h2>
         <form className="space-y-4">
           <div>
