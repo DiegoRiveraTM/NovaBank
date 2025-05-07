@@ -2,23 +2,26 @@
 
 ## Project Overview 📄
 NovaBank is a digital "Neobank" built with the MERN stack (MongoDB, Express, React, Node.js), Docker containers, and AWS services (EC2, S3, CloudFront).  
-It simulates real banking operations such as **deposits**, **withdrawals**, and **internal transfers** between users, using a secure **JWT-based authentication** system.
+It simulates real banking operations such as **withdrawals** and **internal transfers** between users, using a secure **JWT-based authentication** system.
 
 This project showcases modern fullstack development skills, cloud infrastructure deployment, and secure web application practices.
 
 ---
 
-## Technologies Used 🚀
+## 🚀 Technologies Used
 
-- **Frontend**: React, Vite, Axios, TailwindCSS (optional)
-- **Backend**: Node.js, Express, MongoDB, JWT, Bcrypt
-- **Database**: MongoDB Atlas (M0 Free Cluster)
-- **Containerization**: Docker, Docker Compose
-- **Infrastructure**: AWS EC2 (backend), AWS S3 + CloudFront (frontend)
+- **Frontend:** Next.js (App Router), React, Tailwind CSS, Shadcn UI
+- **Backend:** Node.js, Express, TypeScript, MongoDB (Mongoose)
+- **Authentication:** JSON Web Tokens (JWT)
+- **Database:** MongoDB Atlas
+- **AWS:**
+  - **EC2:** Backend hosted on an EC2 instance
+  - **S3:** Frontend deployed as a static site on S3
+  - **SES:** Email service for password recovery and notifications
 
 ---
 
-## Features ✨
+## ✨ Features
 
 - User Registration and Login
 - Password Recovery (Forgot Password)
@@ -26,51 +29,51 @@ This project showcases modern fullstack development skills, cloud infrastructure
 - User Dashboard:
   - View current balance
   - View transaction history
-  - Deposit funds
+  - Deposit funds (coming soon)
   - Withdraw funds
   - Transfer funds to other users
 - Transaction history with detailed records
-- Profile image upload (optional via AWS S3)
-- Email notifications for transactions (optional via AWS SES)
-- Admin Panel (optional):
-  - View users, balances, and transactions
+- Email notifications for transactions (via AWS SES)
 - Fully containerized backend with Docker and Docker Compose
 - Cloud Deployment with AWS EC2, S3, and CloudFront
 
 ---
 
-## Project Structure 🏗️
-
-
----
-
-## Deployment Architecture 🛠️
+## 🛠️ Deployment Architecture
 
 ```plaintext
-Client (Browser) → CloudFront → S3 (Static Frontend Hosting)
-                         ↓
-              React App (Frontend)
-                         ↓
-                 Axios HTTP Requests
-                         ↓
-             Express API (Backend on EC2 Docker)
-                         ↓
-                  MongoDB Database (Atlas or EC2)
+Client (Browser)
+      ↓
+CloudFront CDN
+      ↓
+S3 Bucket (Static Frontend Hosting - Next.js App)
+      ↓
+Axios HTTP Requests
+      ↓
+Express API (Backend running on EC2 - Dockerized)
+      ↓
+MongoDB Atlas (Database)
+      ↓
+AWS SES (Email Service for Password Recovery)
+
+---
 
 How to Run Locally ⚙️
     1. Clone the repository
         git clone https://github.com/DiegoRiveraTM/NovaBank
     2. Backend setup:
-        cd backend
+        cd novabank
+        cd src (for the backend )
         npm install 
-        npm run dev
+        npx ts-node-dev src/index.ts
     3. Frontend setup
-        cd frontend
+        cd src/app
         npm install
         npm run dev
     4. Docker Local Setup (Optional)
         docker-compose up --build
 
 Enjoy!
+
 
 From: DiegoR🚀
