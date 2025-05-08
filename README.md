@@ -29,8 +29,8 @@ This project showcases modern fullstack development skills, cloud infrastructure
 - User Dashboard:
   - View current balance
   - View transaction history
-  - Deposit funds (coming soon)
-  - Withdraw funds
+  - Deposit funds
+  - Withdraw funds (coming soon)
   - Transfer funds to other users
 - Transaction history with detailed records
 - Email notifications for transactions (via AWS SES)
