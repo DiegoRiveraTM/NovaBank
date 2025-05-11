@@ -48,7 +48,7 @@ export default function HomePage() {
           <div className="flex flex-col md:flex-row justify-between">
             <div className="mb-6 md:mb-0">
               <div className="flex items-center gap-2 mb-4">
-                <div className="h-8 w-8 rounded-full bg-gradient-to-r from-blue-800 to-emerald-500"></div>
+                <div className="h-8 w-8 rounded-full bg-gradient-to-r from-blue-800 to-emearald-500"></div>
                 <span className="text-xl font-bold">NovaBank</span>
               </div>
               <p className="max-w-md">
